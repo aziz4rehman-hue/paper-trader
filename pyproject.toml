@@ -1,0 +1,26 @@
+[project]
+name = "paper-trader"
+version = "0.1.0"
+description = "Educational long-only paper-trading backtester with costs, no lookahead, and risk metrics."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Aziz Rehman" }]
+keywords = ["trading", "backtest", "paper-trading", "quant"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/aziz4rehman-hue/paper-trader"
+
+[project.scripts]
+papertrader = "papertrader.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["papertrader*"]
+
+[tool.setuptools.package-data]
+papertrader = ["data/*.csv"]
