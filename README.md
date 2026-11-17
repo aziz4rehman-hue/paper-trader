@@ -6,6 +6,8 @@ Long-only paper-trading backtester in the Python standard library. It replays OH
 
 On the included demo data, buy-and-hold beats both SMA crossover and RSI. That is the point of a backtester: a strategy can look reasonable and still lose.
 
+**[See the live demo](https://aziz4rehman-hue.github.io/paper-trader/)**
+
 ## Quick start
 
 ```bash

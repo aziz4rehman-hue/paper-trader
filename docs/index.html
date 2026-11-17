@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paper-trader demo</title>
+<style>
+  :root { color-scheme: dark; --bg:#0c0f14; --card:#151b24; --line:#2a3444; --text:#e7edf5; --muted:#93a0b5; --accent:#5eead4; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.45 ui-sans-serif, system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  header, main { width:min(720px, calc(100% - 32px)); margin:0 auto; }
+  header { padding:28px 0 8px; }
+  .kicker { color:var(--accent); letter-spacing:.14em; text-transform:uppercase; font-size:12px; margin:0 0 8px; }
+  h1 { font-size:28px; margin:0 0 8px; }
+  p { color:var(--muted); }
+  a { color:var(--accent); }
+  .cards { display:grid; gap:10px; margin:18px 0 28px; }
+  button.card { text-align:left; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:16px; padding:16px; font:inherit; }
+  button.card.on { border-color:var(--accent); }
+  .name { font-weight:700; font-size:18px; }
+  .ret { font-variant-numeric:tabular-nums; font-size:28px; margin:6px 0; }
+  .ret.bad { color:#ff8d8d; } .ret.good { color:#7dffa8; }
+  .meta { color:var(--muted); font-size:14px; }
+  .spark { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:1px; color:var(--accent); margin-top:8px; }
+</style>
+</head>
+<body>
+<header>
+  <p class="kicker">Live demo</p>
+  <h1>paper-trader</h1>
+  <p>Same three strategies as <code>python -m papertrader compare</code>, on the bundled synthetic series. Buy-and-hold wins. Not financial advice. <a href="https://github.com/aziz4rehman-hue/paper-trader">Source</a></p>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+</main>
+<script>
+const rows = [
+  { name:"buy and hold", ret:"+12.88%", cagr:"+18.60%", dd:"-18.28%", sharpe:"1.63", trades:"0", win:"n/a", spark:"▁▂▃▃▃▄▅▇▇█▇▆▅▅▄▄▂▂▁▁▂▃▄▄▅▆▆▇▇▆▅▅▄▄▄▄▃▃▂▃▃▅", note:"Buys the first fill and never sells, so win rate is n/a." },
+  { name:"SMA 10/30", ret:"+5.38%", cagr:"+7.66%", dd:"-7.04%", sharpe:"1.11", trades:"2", win:"50%", spark:"▃▃▃▃▃▃▃▄▄▅▄▂▁▁▁▁▁▁▁▁▁▁▂▃▄▅▇▇█▆▅▅▅▅▅▅▅▅▅▅▅▅", note:"Long only when the fast average is above the slow one. Two closed trades." },
+  { name:"RSI 14", ret:"-12.47%", cagr:"-17.10%", dd:"-15.85%", sharpe:"-2.73", trades:"2", win:"0%", spark:"████████████▇▆▆▅▄▃▁▂▃▄▄▄▄▄▄▄▄▄▄▃▃▃▂▂▁▁▁▁▂▂", note:"Buys oversold and sells overbought. Both closed trades lost." },
+];
+const root=document.getElementById("cards");
+rows.forEach((row, index)=>{
+  const btn=document.createElement("button");
+  btn.type="button";
+  btn.className="card"+(index===0?" on":"");
+  btn.innerHTML=`<div class="name"></div><div class="ret ${row.ret.startsWith("-")?"bad":"good"}"></div><div class="meta"></div><div class="spark"></div><div class="meta note"></div>`;
+  btn.querySelector(".name").textContent=row.name;
+  btn.querySelector(".ret").textContent=row.ret;
+  btn.querySelector(".meta").textContent=`CAGR ${row.cagr} · max DD ${row.dd} · Sharpe ${row.sharpe} · ${row.trades} trades · win ${row.win}`;
+  btn.querySelector(".spark").textContent=row.spark;
+  btn.querySelector(".note").textContent=row.note;
+  btn.onclick=()=>{root.querySelectorAll(".card").forEach(c=>c.classList.remove("on")); btn.classList.add("on");};
+  root.append(btn);
+});
+</script>
+</body>
+</html>
